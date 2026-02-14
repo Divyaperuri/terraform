@@ -1,4 +1,4 @@
-variable "instance" {
+variable "instances" {
     default = [ "mongodb", "redis", "mysql" ]
 }
 

@@ -1,0 +1,27 @@
+# Local .terraform directories
+.terraform/
+.terraform.lock.hcl
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+#terraform plan files
+*.tfplan
+
+# Crash log files
+crash.log
+
+# Exclude all .tfvars files, which can contain sensitive data.
+# An exception for a non-sensitive file can be added later.
+.tfvars
+.tfvars.json
+
+# Ignore override files that might contain sensitive information
+# or local modifications.
+override.tf
+override.tf.json
+
+
+# Terraform CLI configuration file
+# aws credentials

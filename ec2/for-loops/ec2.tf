@@ -1,18 +1,20 @@
 resource "aws_instance" "terraform" {
-    count = 3
-    # count = length(var.instances)
+    #count = 3
+    # for_each = var.instances
+    for_each = toset(var.instances)
     ami= "ami-0220d79f3f480ecf5"
     instance_type= "t3.micro"
-    vpc_security_group_ids = [aws_security_group.allow_all_traffic.id]
+    vpc_security_group_ids = [aws_security_group.allow_all.id]
     tags = {
-        Name = var.instances[count.index]
+        # Name = each.key
+        Name   = each.value
         Terraform = "true"
         Project = "roboshop"
     }
 }
 
-resource "aws_security_group" "allow_all_traffic" {
-    name = "allow-all-traffic"
+resource "aws_security_group" "allow_all" {
+    name = "allow-all"
     #outbound traffic
     egress {
         from_port   = 0 # all ports are allow
@@ -28,6 +30,6 @@ resource "aws_security_group" "allow_all_traffic" {
         cidr_blocks = ["0.0.0.0/0"] # internet allow
     }
     tags = {
-        Name = "allow-all-traffic"
+        Name = "allow-all"
     }
 }

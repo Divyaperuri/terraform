@@ -9,7 +9,7 @@ resource "aws_instance" "terraform" {
 }
 
 resource "aws_security_group" "allow_all" {
-    name = "allow-al"
+    name = "allow-all"
     #outbound traffic
     egress {
         from_port   = 0 # all ports are allow

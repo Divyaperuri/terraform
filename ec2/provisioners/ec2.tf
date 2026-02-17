@@ -1,18 +1,25 @@
 resource "aws_instance" "terraform" {
-    count = 3
-    # count = length(var.instances)  #length function will give you length of list 
     ami= "ami-0220d79f3f480ecf5"
     instance_type= "t3.micro"
-    vpc_security_group_ids = [aws_security_group.allow_all_traffic.id]
+    vpc_security_group_ids = [aws_security_group.allow_all_ports.id]
     tags = {
-        Name = var.instances[count.index]
+        Name = "terraform"
         Terraform = "true"
-        Project = "roboshop"
+    }
+
+    provisioner "local-exec"{
+        command = "echo ${self.private_ip} > inventory"
+        on_failure = continue
+    }
+
+    provisioner "local-exec"{
+        command = "echo instance destroyed"
+        when     = destroy
     }
 }
 
-resource "aws_security_group" "allow_all_traffic" {
-    name = "allow-all-traffic"
+resource "aws_security_group" "allow_all_ports" {
+    name = "allow-all-ports"
     #outbound traffic
     egress {
         from_port   = 0 # all ports are allow
@@ -28,6 +35,6 @@ resource "aws_security_group" "allow_all_traffic" {
         cidr_blocks = ["0.0.0.0/0"] # internet allow
     }
     tags = {
-        Name = "allow-all-traffic"
+        Name = "allow-all-ports"
     }
 }
